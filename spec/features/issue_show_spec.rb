@@ -36,9 +36,9 @@ RSpec.describe Issue, type: :feature do
   end
 
   describe '#index' do
-    it 'displays repo name as a capitalized title' do
+    it 'displays repo names as a title' do
       visit issues_path
-      expect(page).to have_content('repo: Learn write')
+      expect(page).to have_content('repo: Learn Write')
     end
   end
 end
