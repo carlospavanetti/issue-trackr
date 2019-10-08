@@ -5,8 +5,8 @@ RSpec.describe Issue, :type => :feature do
   describe "#show" do
    before(:each) do 
     @user = User.create(name: "Sophie DeBenedetto", email: "sophie.debenedetto@gmail.com", github_username: "sophiedebenedetto")
-     sign_in  
-     ApplicationController.any_instance.stub(:current_user).and_return(@user)
+    sign_in
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
    end
 
     context "without phone number" do 

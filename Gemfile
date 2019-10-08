@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5.1'
+gem 'rails', '~> 5.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.15'
 # Use SCSS for stylesheets
@@ -27,7 +27,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'octokit'
 gem 'omniauth-github'
 
-# Use ActiveModel has_secure_password
+# Use ActiveModel has_secure_passworda
 gem 'bcrypt', '~> 3.1.7'
 gem 'puma'
 # gem 'dotenv'
@@ -57,7 +57,6 @@ group :test do
   gem "selenium"
   gem 'rspec-rails'
   gem 'database_cleaner'
-  gem 'pry-rails'
   gem 'launchy'
   gem 'sms-spec'
 end

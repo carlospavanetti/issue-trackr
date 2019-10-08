@@ -12,7 +12,7 @@ RSpec.describe RepositoriesController, :type => :controller do
     it "creates a repo with the given link and information requested from github" do
       VCR.use_cassette("create_repo") do 
         expect do
-          post :create, {repository: {url: "https://github.com/sophiedebenedetto/learn-write"}}
+          post :create, params: {repository: {url: "https://github.com/sophiedebenedetto/learn-write"}}
         end.to change {Repository.count}.from(0).to(1)
         repo = Repository.first
         expect(repo.url).to eq("https://github.com/sophiedebenedetto/learn-write")
@@ -22,7 +22,7 @@ RSpec.describe RepositoriesController, :type => :controller do
 
     it "creates the correct number of issues and associates them to the new repository" do 
       VCR.use_cassette("create_repo") do 
-         post :create, {repository: {url: "https://github.com/sophiedebenedetto/learn-write"}}
+         post :create, params: {repository: {url: "https://github.com/sophiedebenedetto/learn-write"}}
          repo = Repository.first
          expect(repo.issues.count).to eq(2)
          expect(Issue.first.repository).to eq(repo)

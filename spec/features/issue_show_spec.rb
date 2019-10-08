@@ -7,8 +7,8 @@ RSpec.describe Issue, :type => :feature do
     @user = User.create(name: "Sophie DeBenedetto", email: "sophie.debenedetto@gmail.com", github_username: "sophiedebenedetto")
     @repo = Repository.create(name: "learn-write", url: "https://github.com/SophieDeBenedetto/learn-write", user: @user)
     @issue = Issue.create(title: "my issue", content: "this is a test issue.", repository: @repo, opened_on: DateTime.now, url: "https://github.com/SophieDeBenedetto/learn-write/issues/1")
-     sign_in  
-     ApplicationController.any_instance.stub(:current_user).and_return(@user)
+    sign_in
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
    end
 
     it "displays an issues's title, content, github link and repo name" do
