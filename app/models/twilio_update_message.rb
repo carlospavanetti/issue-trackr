@@ -7,8 +7,14 @@ class TwilioUpdateMessage
   def send(owner)
     @client.messages.create(
       to: owner.phone_number,
-      from: "+1 #{ENV['TWILIO_NUMBER']}",
+      from: twilio_number,
       body: "#{@issue.title} has been updated. View it here: #{@issue.url}"
     )
+  end
+
+  private
+
+  def twilio_number
+    "+1 #{ENV['TWILIO_NUMBER']}"
   end
 end
