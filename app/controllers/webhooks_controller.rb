@@ -4,9 +4,7 @@ class WebhooksController < ApplicationController
 
   def receive
     unless params[:zen]
-      issue = WebhookUpdatingIssue.new(
-        NotifierIssue.new(Issue.find_or_create_by(url: issue_params[:html_url]))
-      )
+      issue = issue_from_url(issue_params[:html_url])
       issue.sync_with_webhook_payload!(issue_params)
       issue.send_message!
       issue.send_email!
@@ -18,5 +16,11 @@ class WebhooksController < ApplicationController
 
   def issue_params
     params['issue']
+  end
+
+  def issue_from_url(url)
+    WebhookUpdatingIssue.new(
+      NotifierIssue.new(Issue.find_or_create_by(url: url))
+    )
   end
 end
