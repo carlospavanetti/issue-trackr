@@ -17,6 +17,6 @@ class User < ActiveRecord::Base
   end
 
   def normalize_phone_number
-    phone_number = nil if phone_number && phone_number.strip.empty?
+    phone_number = nil if phone_number.blank?
   end
 end

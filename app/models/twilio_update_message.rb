@@ -5,6 +5,8 @@ class TwilioUpdateMessage
   end
 
   def send(owner)
+    return if owner.phone_number.blank?
+
     @client.messages.create(
       to: owner.phone_number,
       from: twilio_number,
