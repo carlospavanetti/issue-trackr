@@ -5,10 +5,10 @@ RSpec.describe WebhooksController, type: :controller do
   FIXTURES_PATH = Rails.root.join('spec', 'fixtures')
 
   describe '#receive' do
+    let(:user) { create(:user, :with_phone_number) }
     before(:each) do
-      @user = User.create(name: 'Sophie DeBenedetto', email: 'sophie.debenedetto@gmail.com', github_username: 'SophieDeBenedetto', phone_number: '123-456-7890')
       @payload = JSON.parse(File.read("#{FIXTURES_PATH}/webhook_issue_payload.json"), symbolize_names: true)
-      @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: @user)
+      @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: user)
     end
 
     context 'with a new issue' do
@@ -19,7 +19,7 @@ RSpec.describe WebhooksController, type: :controller do
           expect(@repo.issues.count).to eq(1)
           expect(issue.url).to eq('https://github.com/SophieDeBenedetto/learn-write/issues/5')
           expect(issue.repository).to eq(@repo)
-          expect(issue.user).to eq(@user)
+          expect(issue.user).to eq(user)
         end
       end
     end
@@ -45,7 +45,7 @@ RSpec.describe WebhooksController, type: :controller do
 
       it 'sends a text message to the use whoe issue has been created/updated' do
         post :receive, params: @payload
-        text_message = open_last_text_message_for(@user.phone_number)
+        text_message = open_last_text_message_for(user.phone_number)
         expect(text_message.body).to eq('test issue 2 has been updated. View it here: https://github.com/SophieDeBenedetto/learn-write/issues/5')
         expect(text_message.from).to eq('+1 914-363-0827')
         expect(text_message.number).to eq('234567890')

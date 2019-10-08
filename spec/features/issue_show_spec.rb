@@ -1,12 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Issue, type: :feature do
+  let(:user) { create(:user) }
   before(:each) do
-    @user = User.create(name: 'Sophie DeBenedetto', email: 'sophie.debenedetto@gmail.com', github_username: 'sophiedebenedetto')
-    @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: @user)
+    @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: user)
     @issue = Issue.create(title: 'my issue', content: 'this is a test issue.', repository: @repo, opened_on: DateTime.now, url: 'https://github.com/SophieDeBenedetto/learn-write/issues/1')
     sign_in
-    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(@user)
+    allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
   end
 
   describe '#show' do
