@@ -4,17 +4,10 @@ class WebhooksController < ApplicationController
 
   def receive
     unless params[:zen]
-      issue = Issue.find_or_create_by(url: issue_params['html_url'])
-      unless issue.repository
-        url_elements = issue_params['repository_url'].split('/')
-        repo_url = "https://github.com/#{url_elements[-2]}/#{url_elements[-1]}"
-        repo = Repository.find_by(url: repo_url)
-        issue.update(repository: repo)
-      end
-      issue.update(
-        title: issue_params['title'], content: issue_params['body'],
-        assignee: issue_params['assignee'], status: issue_params['state']
+      issue = WebhookUpdatingIssue.new(
+        Issue.find_or_create_by(url: issue_params[:html_url])
       )
+      issue.sync_with_webhook_payload!(issue_params)
       owner = issue.repository.user
       TwilioUpdateMessage.new(issue).send(owner) if owner.phone_number
       UserMailer.issue_update_email(issue.user, issue).deliver_now
