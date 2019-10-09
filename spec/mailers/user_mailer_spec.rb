@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe UserMailer, type: :mailer do
   describe '#issue_update_email' do
     let(:user) { create(:user) }
+    let(:repo) { create(:repository, user: user) }
     before(:each) do
-      @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: user)
-      @issue = Issue.create(title: 'my issue', content: 'this is a test issue.', repository: @repo, opened_on: DateTime.now, url: 'https://github.com/SophieDeBenedetto/learn-write/issues/1')
+      @issue = Issue.create(title: 'my issue', content: 'this is a test issue.', repository: repo, opened_on: DateTime.now, url: 'https://github.com/SophieDeBenedetto/learn-write/issues/1')
     end
 
     it 'sends an email to a user when an issue on one of their repos has been created or changed' do

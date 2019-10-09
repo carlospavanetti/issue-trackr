@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe Issue, type: :feature do
   describe '#show' do
     let(:user) { create(:user) }
+    let!(:repo) { create(:repository, user: user) }
     before(:each) do
       sign_in
       allow_any_instance_of(ApplicationController).to receive(:current_user).and_return(user)
     end
 
     it 'displays owned repo names as a title' do
-      @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: user)
       visit user_path(user)
       expect(page).to have_content('Learn Write')
     end

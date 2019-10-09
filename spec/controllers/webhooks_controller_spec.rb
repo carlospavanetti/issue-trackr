@@ -6,9 +6,9 @@ RSpec.describe WebhooksController, type: :controller do
 
   describe '#receive' do
     let(:user) { create(:user, :with_phone_number) }
+    let!(:repo) { create(:repository, user: user) }
     before(:each) do
       @payload = JSON.parse(File.read("#{FIXTURES_PATH}/webhook_issue_payload.json"), symbolize_names: true)
-      @repo = Repository.create(name: 'learn-write', url: 'https://github.com/SophieDeBenedetto/learn-write', user: user)
     end
 
     context 'with a new issue' do
@@ -16,9 +16,9 @@ RSpec.describe WebhooksController, type: :controller do
         VCR.use_cassette('webooks_receive') do
           post :receive, params: @payload
           issue = Issue.first
-          expect(@repo.issues.count).to eq(1)
+          expect(repo.issues.count).to eq(1)
           expect(issue.url).to eq('https://github.com/SophieDeBenedetto/learn-write/issues/5')
-          expect(issue.repository).to eq(@repo)
+          expect(issue.repository).to eq(repo)
           expect(issue.user).to eq(user)
         end
       end
@@ -26,10 +26,10 @@ RSpec.describe WebhooksController, type: :controller do
 
     context 'updating an existing issue' do
       it 'updates an existing issue with the info in the payload from github' do
-        @repo.issues.build(url: 'https://github.com/SophieDeBenedetto/learn-write/issues/5', content: 'testing')
+        repo.issues.build(url: 'https://github.com/SophieDeBenedetto/learn-write/issues/5', content: 'testing')
         post :receive, params: @payload
-        expect(@repo.issues.count).to eq(1)
-        expect(@repo.issues.first.content).to eq('THIS IS a TEST')
+        expect(repo.issues.count).to eq(1)
+        expect(repo.issues.first.content).to eq('THIS IS a TEST')
       end
     end
 
