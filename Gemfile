@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0'
 # Use postgresql as the database for Active Record
@@ -51,14 +50,15 @@ group :development, :test do
 end
 
 group :test do
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
+  gem 'factory_bot_rails'
+  gem 'launchy'
+  gem 'rspec-rails'
+  gem 'selenium'
+  gem 'sms-spec'
   gem 'vcr'
   gem 'webmock'
-  gem "capybara-webkit"
-  gem "selenium"
-  gem 'rspec-rails'
-  gem 'database_cleaner'
-  gem 'launchy'
-  gem 'sms-spec'
 end
 
 group :development do
@@ -68,4 +68,3 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
